@@ -1,0 +1,24 @@
+{
+  "name": "webgl-learn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode development --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Aleksei Kuzmichev <lesha@lesha.co> (https://lesha.co/)",
+  "license": "ISC",
+  "dependencies": {
+    "three": "^0.116.1",
+    "three-trackballcontrols": "0.0.8",
+    "three-trackballcontrols-ts": "^0.2.1",
+    "webpack": "^4.43.0"
+  },
+  "devDependencies": {
+    "ts-loader": "^7.0.4",
+    "typescript": "^3.9.2",
+    "webpack-cli": "^3.3.11"
+  }
+}
