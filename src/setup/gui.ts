@@ -13,11 +13,6 @@ hudCanvas.height = height;
 
 // Get 2D context and draw something supercool.
 export const hudBitmap = hudCanvas.getContext('2d');
-if (hudBitmap === null) throw new Error('hudBitmap is null');
-hudBitmap.font = 'Normal 40px Arial';
-hudBitmap.textAlign = 'center';
-hudBitmap.fillStyle = 'rgba(245,245,245,0.75)';
-hudBitmap.fillText('Initializing...', width / 2, height / 2);
 
 // Create the camera and set the viewport to match the screen dimensions.
 const cameraHUD = new THREE.OrthographicCamera(

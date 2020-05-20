@@ -51288,6 +51288,107 @@ if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
 
 /***/ }),
 
+/***/ "./src/guiMarks/planet.ts":
+/*!********************************!*\
+  !*** ./src/guiMarks/planet.ts ***!
+  \********************************/
+/*! exports provided: planet */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "planet", function() { return planet; });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./primitives */ "./src/guiMarks/primitives.ts");
+
+
+var material = new three__WEBPACK_IMPORTED_MODULE_0__["MeshBasicMaterial"]({ color: 0xffffff, side: three__WEBPACK_IMPORTED_MODULE_0__["DoubleSide"] });
+var planet = function () {
+    var planet = new three__WEBPACK_IMPORTED_MODULE_0__["Object3D"]();
+    planet.add(Object(_primitives__WEBPACK_IMPORTED_MODULE_1__["circle"])(6, 100));
+    planet.add(Object(_primitives__WEBPACK_IMPORTED_MODULE_1__["circleFilled"])(4, 100, material));
+    return planet;
+};
+
+
+/***/ }),
+
+/***/ "./src/guiMarks/primitives.ts":
+/*!************************************!*\
+  !*** ./src/guiMarks/primitives.ts ***!
+  \************************************/
+/*! exports provided: circle, line, circleFilled */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "circle", function() { return circle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "line", function() { return line; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "circleFilled", function() { return circleFilled; });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+
+
+var circle = function (radius, segments, material) {
+    if (segments === void 0) { segments = 100; }
+    var m = material !== null && material !== void 0 ? material : new three__WEBPACK_IMPORTED_MODULE_0__["LineBasicMaterial"]({ color: 0xffffff });
+    var geometry = new three__WEBPACK_IMPORTED_MODULE_0__["CircleGeometry"](radius, segments);
+    geometry.vertices.shift();
+    return new three__WEBPACK_IMPORTED_MODULE_0__["LineLoop"](geometry, m);
+};
+var line = function (length, material) {
+    var m = material !== null && material !== void 0 ? material : new three__WEBPACK_IMPORTED_MODULE_0__["LineBasicMaterial"]({ color: 0xffffff });
+    var geometry = new three__WEBPACK_IMPORTED_MODULE_0__["Geometry"]();
+    geometry.vertices.push(new three__WEBPACK_IMPORTED_MODULE_0__["Vector3"](0, 0, 0));
+    geometry.vertices.push(new three__WEBPACK_IMPORTED_MODULE_0__["Vector3"](length, 0, 0));
+    return new three__WEBPACK_IMPORTED_MODULE_0__["Line"](geometry, m);
+};
+var circleFilled = function (radius, segments, material) {
+    if (segments === void 0) { segments = 100; }
+    var m = material !== null && material !== void 0 ? material : new three__WEBPACK_IMPORTED_MODULE_0__["LineBasicMaterial"]({ color: 0xffffff });
+    var geometry = new three__WEBPACK_IMPORTED_MODULE_0__["CircleGeometry"](radius, segments);
+    geometry.vertices.shift();
+    return new three__WEBPACK_IMPORTED_MODULE_0__["Mesh"](geometry, m);
+};
+
+
+/***/ }),
+
+/***/ "./src/guiMarks/sun.ts":
+/*!*****************************!*\
+  !*** ./src/guiMarks/sun.ts ***!
+  \*****************************/
+/*! exports provided: sun */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sun", function() { return sun; });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./primitives */ "./src/guiMarks/primitives.ts");
+
+
+var material = new three__WEBPACK_IMPORTED_MODULE_0__["MeshBasicMaterial"]({ color: 0xffffff, side: three__WEBPACK_IMPORTED_MODULE_0__["DoubleSide"] });
+var Z = new three__WEBPACK_IMPORTED_MODULE_0__["Vector3"](0, 0, 1);
+var sun = function () {
+    var o = new three__WEBPACK_IMPORTED_MODULE_0__["Object3D"]();
+    var ray = function () {
+        var ray = Object(_primitives__WEBPACK_IMPORTED_MODULE_1__["line"])(7);
+        // ray.position.x = 5;
+        ray.updateMatrix();
+        return ray;
+    };
+    o.add(Object(_primitives__WEBPACK_IMPORTED_MODULE_1__["circleFilled"])(4, 100, material));
+    for (var index = 0; index < 8; index++) {
+        var r = ray();
+        r.rotateZ((Math.PI / 4) * index);
+        o.add(r);
+    }
+    return o;
+};
+
+
+/***/ }),
+
 /***/ "./src/helpers/cameraType.ts":
 /*!***********************************!*\
   !*** ./src/helpers/cameraType.ts ***!
@@ -51304,29 +51405,6 @@ var isOrthographicCamera = function (cam) {
 };
 var isPerspectiveCamera = function (cam) {
     return cam.type === 'PerspectiveCamera';
-};
-
-
-/***/ }),
-
-/***/ "./src/helpers/circle.ts":
-/*!*******************************!*\
-  !*** ./src/helpers/circle.ts ***!
-  \*******************************/
-/*! exports provided: circle */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "circle", function() { return circle; });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-
-var circle = function (radius, segments, material) {
-    if (segments === void 0) { segments = 100; }
-    var m = material !== null && material !== void 0 ? material : new three__WEBPACK_IMPORTED_MODULE_0__["LineBasicMaterial"]({ color: 0xffffff });
-    var geometry = new three__WEBPACK_IMPORTED_MODULE_0__["CircleGeometry"](radius, segments);
-    geometry.vertices.shift();
-    return new three__WEBPACK_IMPORTED_MODULE_0__["LineLoop"](geometry, m);
 };
 
 
@@ -51399,12 +51477,13 @@ var MyVector3 = /** @class */ (function (_super) {
 /*!***********************************!*\
   !*** ./src/helpers/toScreenXY.ts ***!
   \***********************************/
-/*! exports provided: toScreenXY */
+/*! exports provided: toScreenXY, toScreenXY2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toScreenXY", function() { return toScreenXY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toScreenXY2", function() { return toScreenXY2; });
 /* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 
 var toScreenXY = function (position, camera, canvas) {
@@ -51415,6 +51494,16 @@ var toScreenXY = function (position, camera, canvas) {
     return {
         x: ((pos.x + 1) * canvas.width) / 2,
         y: ((-pos.y + 1) * canvas.height) / 2,
+    };
+};
+var toScreenXY2 = function (position, camera, canvas) {
+    var pos = position.clone();
+    var projScreenMat = new three__WEBPACK_IMPORTED_MODULE_0__["Matrix4"]();
+    projScreenMat.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+    projScreenMat.multiplyVector3(pos);
+    return {
+        x: (pos.x * canvas.width) / 2,
+        y: (-pos.y * canvas.height) / 2,
     };
 };
 
@@ -51445,6 +51534,13 @@ var updateCamera = function (_a) {
             camera.bottom = -frustumSize / 2;
             camera.updateProjectionMatrix();
         }
+        else {
+            camera.left = -window.innerWidth / 2;
+            camera.right = window.innerWidth / 2;
+            camera.top = window.innerHeight / 2;
+            camera.bottom = -window.innerHeight / 2;
+            camera.updateProjectionMatrix();
+        }
     }
     if (Object(_cameraType__WEBPACK_IMPORTED_MODULE_0__["isPerspectiveCamera"])(camera)) {
         camera.aspect = aspect;
@@ -51472,11 +51568,13 @@ var onWindowResize = function (combos, renderer, controls) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _setup_mainScene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./setup/mainScene */ "./src/setup/mainScene.ts");
-/* harmony import */ var _setup_gui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./setup/gui */ "./src/setup/gui.ts");
-/* harmony import */ var _helpers_circle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers/circle */ "./src/helpers/circle.ts");
-/* harmony import */ var _solar_system__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./solar_system */ "./src/solar_system.ts");
-/* harmony import */ var _setup_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./setup/index */ "./src/setup/index.ts");
-/* harmony import */ var _helpers_toScreenXY__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./helpers/toScreenXY */ "./src/helpers/toScreenXY.ts");
+/* harmony import */ var _setup_gui_cam__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./setup/gui-cam */ "./src/setup/gui-cam.ts");
+/* harmony import */ var _guiMarks_planet__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./guiMarks/planet */ "./src/guiMarks/planet.ts");
+/* harmony import */ var _guiMarks_primitives__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./guiMarks/primitives */ "./src/guiMarks/primitives.ts");
+/* harmony import */ var _solar_system__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./solar_system */ "./src/solar_system.ts");
+/* harmony import */ var _setup_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./setup/index */ "./src/setup/index.ts");
+/* harmony import */ var _helpers_toScreenXY__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./helpers/toScreenXY */ "./src/helpers/toScreenXY.ts");
+/* harmony import */ var _guiMarks_sun__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./guiMarks/sun */ "./src/guiMarks/sun.ts");
 
 
 
@@ -51484,33 +51582,32 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-Object(_setup_index__WEBPACK_IMPORTED_MODULE_4__["registerCamera"])(_setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"]);
-Object(_setup_index__WEBPACK_IMPORTED_MODULE_4__["registerCamera"])(_setup_gui__WEBPACK_IMPORTED_MODULE_1__["camCombo"]);
-for (var _i = 0, _a = _solar_system__WEBPACK_IMPORTED_MODULE_3__["planets"]; _i < _a.length; _i++) {
+
+var planetMarks = [];
+var sunMark = Object(_guiMarks_sun__WEBPACK_IMPORTED_MODULE_7__["sun"])();
+Object(_setup_index__WEBPACK_IMPORTED_MODULE_5__["registerCamera"])(_setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"]);
+Object(_setup_index__WEBPACK_IMPORTED_MODULE_5__["registerCamera"])(_setup_gui_cam__WEBPACK_IMPORTED_MODULE_1__["camCombo"]);
+for (var _i = 0, _a = _solar_system__WEBPACK_IMPORTED_MODULE_4__["planets"]; _i < _a.length; _i++) {
     var planet = _a[_i];
-    var line = Object(_helpers_circle__WEBPACK_IMPORTED_MODULE_2__["circle"])(planet.orbitRadius, 1000);
+    var line = Object(_guiMarks_primitives__WEBPACK_IMPORTED_MODULE_3__["circle"])(planet.orbitRadius, 1000);
     _setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"].scene.add(line);
+    var screenCoordinates = Object(_helpers_toScreenXY__WEBPACK_IMPORTED_MODULE_6__["toScreenXY2"])(planet.position, _setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"].camera, _setup_index__WEBPACK_IMPORTED_MODULE_5__["renderer"].domElement);
+    var mark = Object(_guiMarks_planet__WEBPACK_IMPORTED_MODULE_2__["planet"])();
+    mark.position.x = screenCoordinates.x;
+    mark.position.y = screenCoordinates.y;
+    mark.updateMatrix();
+    planetMarks.push(mark);
+    _setup_gui_cam__WEBPACK_IMPORTED_MODULE_1__["camCombo"].scene.add(mark);
+    _setup_gui_cam__WEBPACK_IMPORTED_MODULE_1__["camCombo"].scene.add(sunMark);
 }
-Object(_setup_index__WEBPACK_IMPORTED_MODULE_4__["onRender"])(function () {
-    if (_setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"]) {
-        _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].clearRect(0, 0, _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudCanvas"].width, _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudCanvas"].height);
-    }
-    for (var _i = 0, _a = _solar_system__WEBPACK_IMPORTED_MODULE_3__["planets"]; _i < _a.length; _i++) {
-        var planet = _a[_i];
-        var screenCoordinates = Object(_helpers_toScreenXY__WEBPACK_IMPORTED_MODULE_5__["toScreenXY"])(planet.position, _setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"].camera, _setup_index__WEBPACK_IMPORTED_MODULE_4__["renderer"].domElement);
-        if (_setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"]) {
-            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].beginPath();
-            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].arc(screenCoordinates.x, screenCoordinates.y, 6, 0, 2 * Math.PI, false);
-            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].fillStyle = '#ffffff';
-            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].fill();
-            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].beginPath();
-            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].arc(screenCoordinates.x, screenCoordinates.y, 9, 0, 2 * Math.PI, false);
-            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].lineWidth = 1;
-            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].strokeStyle = '#ffffff';
-            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].stroke();
-        }
-        _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudTexture"].needsUpdate = true;
-    }
+Object(_setup_index__WEBPACK_IMPORTED_MODULE_5__["onRender"])(function () {
+    _solar_system__WEBPACK_IMPORTED_MODULE_4__["planets"].forEach(function (planet, index) {
+        var mark = planetMarks[index];
+        var screenCoordinates = Object(_helpers_toScreenXY__WEBPACK_IMPORTED_MODULE_6__["toScreenXY2"])(planet.position, _setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"].camera, _setup_index__WEBPACK_IMPORTED_MODULE_5__["renderer"].domElement);
+        mark.position.x = screenCoordinates.x;
+        mark.position.y = screenCoordinates.y;
+        mark.updateMatrix();
+    });
 });
 
 
@@ -51527,51 +51624,23 @@ module.exports = JSON.parse("{\"data\":{\"system\":{\"system_id\":\"30000142\",\
 
 /***/ }),
 
-/***/ "./src/setup/gui.ts":
-/*!**************************!*\
-  !*** ./src/setup/gui.ts ***!
-  \**************************/
-/*! exports provided: hudCanvas, hudBitmap, hudTexture, camCombo */
+/***/ "./src/setup/gui-cam.ts":
+/*!******************************!*\
+  !*** ./src/setup/gui-cam.ts ***!
+  \******************************/
+/*! exports provided: camCombo */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hudCanvas", function() { return hudCanvas; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hudBitmap", function() { return hudBitmap; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hudTexture", function() { return hudTexture; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "camCombo", function() { return camCombo; });
 /* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 
-var width = window.innerWidth;
-var height = window.innerHeight;
-// We will use 2D canvas element to render our HUD.
-var hudCanvas = document.createElement('canvas');
-// Again, set dimensions to fit the screen.
-hudCanvas.width = width;
-hudCanvas.height = height;
-// Get 2D context and draw something supercool.
-var hudBitmap = hudCanvas.getContext('2d');
-if (hudBitmap === null)
-    throw new Error('hudBitmap is null');
-hudBitmap.font = 'Normal 40px Arial';
-hudBitmap.textAlign = 'center';
-hudBitmap.fillStyle = 'rgba(245,245,245,0.75)';
-hudBitmap.fillText('Initializing...', width / 2, height / 2);
-// Create the camera and set the viewport to match the screen dimensions.
-var cameraHUD = new three__WEBPACK_IMPORTED_MODULE_0__["OrthographicCamera"](-width / 2, width / 2, height / 2, -height / 2, 0, 30);
-// Create also a custom scene for HUD.
-var sceneHUD = new three__WEBPACK_IMPORTED_MODULE_0__["Scene"]();
-// Create texture from rendered graphics.
-var hudTexture = new three__WEBPACK_IMPORTED_MODULE_0__["Texture"](hudCanvas);
-hudTexture.needsUpdate = true;
-// Create HUD material.
-var material = new three__WEBPACK_IMPORTED_MODULE_0__["MeshBasicMaterial"]({ map: hudTexture });
-material.transparent = true;
-// Create plane to render the HUD. This plane fill the whole screen.
-var planeGeometry = new three__WEBPACK_IMPORTED_MODULE_0__["PlaneGeometry"](width, height);
-var plane = new three__WEBPACK_IMPORTED_MODULE_0__["Mesh"](planeGeometry, material);
-sceneHUD.add(plane);
-var camCombo = { camera: cameraHUD, frustumSize: null, scene: sceneHUD };
+var mainScene = new three__WEBPACK_IMPORTED_MODULE_0__["Scene"]();
+var mainCamera = new three__WEBPACK_IMPORTED_MODULE_0__["OrthographicCamera"](-1000, 1000, 1000, -1000, 1, Math.pow(10, 50));
+mainCamera.position.set(0, 0, Math.pow(10, 2));
+mainCamera.lookAt(0, 0, 0);
+var camCombo = { camera: mainCamera, frustumSize: null, scene: mainScene };
 
 
 /***/ }),
@@ -51615,10 +51684,11 @@ var registerCamera = function (combo) {
     cameras.push(combo);
     Object(_helpers_windowResize__WEBPACK_IMPORTED_MODULE_1__["updateCamera"])(combo);
 };
-var onResize = function () { return Object(_helpers_windowResize__WEBPACK_IMPORTED_MODULE_1__["onWindowResize"])(cameras, renderer, controls); };
-window.addEventListener('resize', onResize, false);
+var onResizeGlobal = function () { return Object(_helpers_windowResize__WEBPACK_IMPORTED_MODULE_1__["onWindowResize"])(cameras, renderer, controls); };
+window.addEventListener('resize', onResizeGlobal, false);
+var invoke = function (fn) { return fn(); };
 function animate() {
-    renderHooks.forEach(function (hook) { return hook(); });
+    renderHooks.forEach(invoke);
     cameras.forEach(function (_a) {
         var camera = _a.camera, scene = _a.scene;
         renderer.render(scene, camera);

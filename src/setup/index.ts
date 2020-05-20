@@ -28,11 +28,13 @@ export const registerCamera = (combo: CamCombo) => {
   updateCamera(combo);
 };
 
-const onResize = () => onWindowResize(cameras, renderer, controls);
-window.addEventListener('resize', onResize, false);
+const onResizeGlobal = () => onWindowResize(cameras, renderer, controls);
+window.addEventListener('resize', onResizeGlobal, false);
+
+const invoke = (fn: () => void): void => fn();
 
 function animate() {
-  renderHooks.forEach((hook) => hook());
+  renderHooks.forEach(invoke);
   cameras.forEach(({ camera, scene }) => {
     renderer.render(scene, camera);
   });

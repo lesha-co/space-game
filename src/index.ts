@@ -1,37 +1,39 @@
 import { camCombo } from './setup/mainScene';
-import { camCombo as guiCombo, hudBitmap, hudTexture, hudCanvas } from './setup/gui';
-// import { camCombo as guiCombo2 } from './setup/gui-cam';
 
-import { circle } from './helpers/circle';
+import { camCombo as guiCombo } from './setup/gui-cam';
+import { planet as planetMark } from './guiMarks/planet';
+import { circle } from './guiMarks/primitives';
 import * as sys from './solar_system';
-import { registerCamera } from './setup/index';
-import { toScreenXY } from './helpers/toScreenXY';
-import { renderer, onRender } from './setup/index';
+import { registerCamera, renderer, onRender } from './setup/index';
+import { toScreenXY2 } from './helpers/toScreenXY';
+import { Object3D } from 'three';
+import { sun } from './guiMarks/sun';
+
+const planetMarks: Object3D[] = [];
+const sunMark = sun();
 registerCamera(camCombo);
 registerCamera(guiCombo);
 
 for (const planet of sys.planets) {
   const line = circle(planet.orbitRadius, 1000);
   camCombo.scene.add(line);
-}
-onRender(() => {
-  if (hudBitmap) {
-    hudBitmap.clearRect(0, 0, hudCanvas.width, hudCanvas.height);
-  }
-  for (const planet of sys.planets) {
-    const screenCoordinates = toScreenXY(planet.position, camCombo.camera, renderer.domElement);
-    if (hudBitmap) {
-      hudBitmap.beginPath();
-      hudBitmap.arc(screenCoordinates.x, screenCoordinates.y, 6, 0, 2 * Math.PI, false);
-      hudBitmap.fillStyle = '#ffffff';
-      hudBitmap.fill();
 
-      hudBitmap.beginPath();
-      hudBitmap.arc(screenCoordinates.x, screenCoordinates.y, 9, 0, 2 * Math.PI, false);
-      hudBitmap.lineWidth = 1;
-      hudBitmap.strokeStyle = '#ffffff';
-      hudBitmap.stroke();
-    }
-    hudTexture.needsUpdate = true;
-  }
+  const screenCoordinates = toScreenXY2(planet.position, camCombo.camera, renderer.domElement);
+  const mark = planetMark();
+  mark.position.x = screenCoordinates.x;
+  mark.position.y = screenCoordinates.y;
+  mark.updateMatrix();
+  planetMarks.push(mark);
+  guiCombo.scene.add(mark);
+  guiCombo.scene.add(sunMark);
+}
+
+onRender(() => {
+  sys.planets.forEach((planet, index) => {
+    const mark = planetMarks[index];
+    const screenCoordinates = toScreenXY2(planet.position, camCombo.camera, renderer.domElement);
+    mark.position.x = screenCoordinates.x;
+    mark.position.y = screenCoordinates.y;
+    mark.updateMatrix();
+  });
 });
