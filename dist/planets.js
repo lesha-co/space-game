@@ -51503,7 +51503,7 @@ var toScreenXY2 = function (position, camera, canvas) {
     projScreenMat.multiplyVector3(pos);
     return {
         x: (pos.x * canvas.width) / 2,
-        y: (-pos.y * canvas.height) / 2,
+        y: (pos.y * canvas.height) / 2,
     };
 };
 
@@ -51537,8 +51537,8 @@ var updateCamera = function (_a) {
         else {
             camera.left = -window.innerWidth / 2;
             camera.right = window.innerWidth / 2;
-            camera.top = -window.innerHeight / 2;
-            camera.bottom = window.innerHeight / 2;
+            camera.top = window.innerHeight / 2;
+            camera.bottom = -window.innerHeight / 2;
             camera.updateProjectionMatrix();
         }
     }

@@ -26,6 +26,6 @@ export const toScreenXY2 = (
   projScreenMat.multiplyVector3(pos);
   return {
     x: (pos.x * canvas.width) / 2,
-    y: (-pos.y * canvas.height) / 2,
+    y: (pos.y * canvas.height) / 2,
   };
 };
