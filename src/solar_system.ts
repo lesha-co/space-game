@@ -1,4 +1,4 @@
-import thera from './planets/jita.json';
+import thera from './systems/jita.json';
 import { MyVector3 } from './helpers/three_func';
 
 const positionToVector3 = (position: { x: string; y: string; z: string }): MyVector3 =>

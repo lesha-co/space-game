@@ -51619,17 +51619,6 @@ Object(_setup_index__WEBPACK_IMPORTED_MODULE_5__["onRender"])(function () {
 
 /***/ }),
 
-/***/ "./src/planets/jita.json":
-/*!*******************************!*\
-  !*** ./src/planets/jita.json ***!
-  \*******************************/
-/*! exports provided: data, default */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"data\":{\"system\":{\"system_id\":\"30000142\",\"planets\":[{\"planet_id\":40009077,\"planet\":{\"planet_id\":\"40009077\",\"position\":{\"x\":\"-35639949630\",\"y\":\"-6225947509\",\"z\":\"20551935633\"},\"name\":\"Jita I\"}},{\"planet_id\":40009078,\"planet\":{\"planet_id\":\"40009078\",\"position\":{\"x\":\"29476716044\",\"y\":\"5149291420\",\"z\":\"-46417511315\"},\"name\":\"Jita II\"}},{\"planet_id\":40009080,\"planet\":{\"planet_id\":\"40009080\",\"position\":{\"x\":\"124056083719\",\"y\":\"21671373654\",\"z\":\"16235707106\"},\"name\":\"Jita III\"}},{\"planet_id\":40009082,\"planet\":{\"planet_id\":\"40009082\",\"position\":{\"x\":\"-107354576606\",\"y\":\"-18753785170\",\"z\":\"436797007078\"},\"name\":\"Jita IV\"}},{\"planet_id\":40009098,\"planet\":{\"planet_id\":\"40009098\",\"position\":{\"x\":\"-639929607985\",\"y\":\"-111789387758\",\"z\":\"-1118379774141\"},\"name\":\"Jita V\"}},{\"planet_id\":40009116,\"planet\":{\"planet_id\":\"40009116\",\"position\":{\"x\":\"2907924314427\",\"y\":\"507985682645\",\"z\":\"-950946134275\"},\"name\":\"Jita VI\"}},{\"planet_id\":40009119,\"planet\":{\"planet_id\":\"40009119\",\"position\":{\"x\":\"-2275005926406\",\"y\":\"-397421085828\",\"z\":\"3223734974754\"},\"name\":\"Jita VII\"}},{\"planet_id\":40009123,\"planet\":{\"planet_id\":\"40009123\",\"position\":{\"x\":\"-4067664386091\",\"y\":\"-710580828973\",\"z\":\"-3956610895959\"},\"name\":\"Jita VIII\"}}],\"name\":\"Jita\"}}}");
-
-/***/ }),
-
 /***/ "./src/setup/gui-cam.ts":
 /*!******************************!*\
   !*** ./src/setup/gui-cam.ts ***!
@@ -51740,8 +51729,8 @@ var camCombo = { camera: mainCamera, frustumSize: frustumSize, scene: mainScene 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "planets", function() { return planets; });
-/* harmony import */ var _planets_jita_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./planets/jita.json */ "./src/planets/jita.json");
-var _planets_jita_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpack_require__.t(/*! ./planets/jita.json */ "./src/planets/jita.json", 1);
+/* harmony import */ var _systems_jita_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./systems/jita.json */ "./src/systems/jita.json");
+var _systems_jita_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpack_require__.t(/*! ./systems/jita.json */ "./src/systems/jita.json", 1);
 /* harmony import */ var _helpers_three_func__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers/three_func */ "./src/helpers/three_func.ts");
 var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
@@ -51759,7 +51748,7 @@ var __assign = (undefined && undefined.__assign) || function () {
 var positionToVector3 = function (position) {
     return new _helpers_three_func__WEBPACK_IMPORTED_MODULE_1__["MyVector3"](parseInt(position.x, 10), parseInt(position.z, 10), 0);
 };
-var planets = _planets_jita_json__WEBPACK_IMPORTED_MODULE_0__.data.system.planets
+var planets = _systems_jita_json__WEBPACK_IMPORTED_MODULE_0__.data.system.planets
     .map(function (p) { return p.planet; })
     .map(function (p) {
     var position = positionToVector3(p.position);
@@ -51768,6 +51757,17 @@ var planets = _planets_jita_json__WEBPACK_IMPORTED_MODULE_0__.data.system.planet
         orbitRadius: orbitRadius });
 });
 
+
+/***/ }),
+
+/***/ "./src/systems/jita.json":
+/*!*******************************!*\
+  !*** ./src/systems/jita.json ***!
+  \*******************************/
+/*! exports provided: data, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"data\":{\"system\":{\"system_id\":\"30000142\",\"planets\":[{\"planet_id\":40009077,\"planet\":{\"planet_id\":\"40009077\",\"position\":{\"x\":\"-35639949630\",\"y\":\"-6225947509\",\"z\":\"20551935633\"},\"name\":\"Jita I\"}},{\"planet_id\":40009078,\"planet\":{\"planet_id\":\"40009078\",\"position\":{\"x\":\"29476716044\",\"y\":\"5149291420\",\"z\":\"-46417511315\"},\"name\":\"Jita II\"}},{\"planet_id\":40009080,\"planet\":{\"planet_id\":\"40009080\",\"position\":{\"x\":\"124056083719\",\"y\":\"21671373654\",\"z\":\"16235707106\"},\"name\":\"Jita III\"}},{\"planet_id\":40009082,\"planet\":{\"planet_id\":\"40009082\",\"position\":{\"x\":\"-107354576606\",\"y\":\"-18753785170\",\"z\":\"436797007078\"},\"name\":\"Jita IV\"}},{\"planet_id\":40009098,\"planet\":{\"planet_id\":\"40009098\",\"position\":{\"x\":\"-639929607985\",\"y\":\"-111789387758\",\"z\":\"-1118379774141\"},\"name\":\"Jita V\"}},{\"planet_id\":40009116,\"planet\":{\"planet_id\":\"40009116\",\"position\":{\"x\":\"2907924314427\",\"y\":\"507985682645\",\"z\":\"-950946134275\"},\"name\":\"Jita VI\"}},{\"planet_id\":40009119,\"planet\":{\"planet_id\":\"40009119\",\"position\":{\"x\":\"-2275005926406\",\"y\":\"-397421085828\",\"z\":\"3223734974754\"},\"name\":\"Jita VII\"}},{\"planet_id\":40009123,\"planet\":{\"planet_id\":\"40009123\",\"position\":{\"x\":\"-4067664386091\",\"y\":\"-710580828973\",\"z\":\"-3956610895959\"},\"name\":\"Jita VIII\"}}],\"name\":\"Jita\"}}}");
 
 /***/ }),
 
