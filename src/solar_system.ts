@@ -1,4 +1,4 @@
-import thera from './systems/jita.json';
+import system from './systems/jita.json';
 
 import { Vector3 } from 'three';
 
@@ -9,7 +9,7 @@ const positionToVector3 = (position: { x: string; y: string; z: string }): Vecto
     0, // Z
   );
 
-export const planets = thera.data.system.planets
+export const planets = system.data.system.planets
   .map((p) => p.planet)
   .map((p) => {
     const position = positionToVector3(p.position);
