@@ -51433,46 +51433,6 @@ function createControls(camera, renderer) {
 
 /***/ }),
 
-/***/ "./src/helpers/three_func.ts":
-/*!***********************************!*\
-  !*** ./src/helpers/three_func.ts ***!
-  \***********************************/
-/*! exports provided: MyVector3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MyVector3", function() { return MyVector3; });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-var MyVector3 = /** @class */ (function (_super) {
-    __extends(MyVector3, _super);
-    function MyVector3() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.plus = function (b) { return _this.clone().add(b); };
-        _this.minus = function (b) { return _this.clone().sub(b); };
-        return _this;
-    }
-    return MyVector3;
-}(three__WEBPACK_IMPORTED_MODULE_0__["Vector3"]));
-
-
-
-/***/ }),
-
 /***/ "./src/helpers/toScreenXY.ts":
 /*!***********************************!*\
   !*** ./src/helpers/toScreenXY.ts ***!
@@ -51731,7 +51691,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "planets", function() { return planets; });
 /* harmony import */ var _systems_jita_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./systems/jita.json */ "./src/systems/jita.json");
 var _systems_jita_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpack_require__.t(/*! ./systems/jita.json */ "./src/systems/jita.json", 1);
-/* harmony import */ var _helpers_three_func__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers/three_func */ "./src/helpers/three_func.ts");
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -51746,7 +51706,9 @@ var __assign = (undefined && undefined.__assign) || function () {
 
 
 var positionToVector3 = function (position) {
-    return new _helpers_three_func__WEBPACK_IMPORTED_MODULE_1__["MyVector3"](parseInt(position.x, 10), parseInt(position.z, 10), 0);
+    return new three__WEBPACK_IMPORTED_MODULE_1__["Vector3"](parseInt(position.x, 10), // X
+    parseInt(position.z, 10), // Y
+    0);
 };
 var planets = _systems_jita_json__WEBPACK_IMPORTED_MODULE_0__.data.system.planets
     .map(function (p) { return p.planet; })

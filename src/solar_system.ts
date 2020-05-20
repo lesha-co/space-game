@@ -1,8 +1,13 @@
 import thera from './systems/jita.json';
-import { MyVector3 } from './helpers/three_func';
 
-const positionToVector3 = (position: { x: string; y: string; z: string }): MyVector3 =>
-  new MyVector3(parseInt(position.x, 10), parseInt(position.z, 10), 0);
+import { Vector3 } from 'three';
+
+const positionToVector3 = (position: { x: string; y: string; z: string }): Vector3 =>
+  new Vector3(
+    parseInt(position.x, 10), // X
+    parseInt(position.z, 10), // Y
+    0, // Z
+  );
 
 export const planets = thera.data.system.planets
   .map((p) => p.planet)
