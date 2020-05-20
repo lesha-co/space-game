@@ -10,13 +10,16 @@ import { Object3D } from 'three';
 import { sun } from './guiMarks/sun';
 
 const planetMarks: Object3D[] = [];
+const orbits: Object3D[] = [];
 const sunMark = sun();
+
 registerCamera(camCombo);
 registerCamera(guiCombo);
 
 for (const planet of sys.planets) {
   const line = circle(planet.orbitRadius, 1000);
   camCombo.scene.add(line);
+  orbits.push(line);
 
   const screenCoordinates = toScreenXY2(planet.position, camCombo.camera, renderer.domElement);
   const mark = planetMark();
@@ -36,4 +39,9 @@ onRender(() => {
     mark.position.y = screenCoordinates.y;
     mark.updateMatrix();
   });
+
+  const screenCoordinates = toScreenXY2(sunMark.position, camCombo.camera, renderer.domElement);
+  sunMark.position.x = screenCoordinates.x;
+  sunMark.position.y = screenCoordinates.y;
+  sunMark.updateMatrix();
 });

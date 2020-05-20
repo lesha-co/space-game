@@ -51537,8 +51537,8 @@ var updateCamera = function (_a) {
         else {
             camera.left = -window.innerWidth / 2;
             camera.right = window.innerWidth / 2;
-            camera.top = window.innerHeight / 2;
-            camera.bottom = -window.innerHeight / 2;
+            camera.top = -window.innerHeight / 2;
+            camera.bottom = window.innerHeight / 2;
             camera.updateProjectionMatrix();
         }
     }
@@ -51584,6 +51584,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var planetMarks = [];
+var orbits = [];
 var sunMark = Object(_guiMarks_sun__WEBPACK_IMPORTED_MODULE_7__["sun"])();
 Object(_setup_index__WEBPACK_IMPORTED_MODULE_5__["registerCamera"])(_setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"]);
 Object(_setup_index__WEBPACK_IMPORTED_MODULE_5__["registerCamera"])(_setup_gui_cam__WEBPACK_IMPORTED_MODULE_1__["camCombo"]);
@@ -51591,6 +51592,7 @@ for (var _i = 0, _a = _solar_system__WEBPACK_IMPORTED_MODULE_4__["planets"]; _i 
     var planet = _a[_i];
     var line = Object(_guiMarks_primitives__WEBPACK_IMPORTED_MODULE_3__["circle"])(planet.orbitRadius, 1000);
     _setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"].scene.add(line);
+    orbits.push(line);
     var screenCoordinates = Object(_helpers_toScreenXY__WEBPACK_IMPORTED_MODULE_6__["toScreenXY2"])(planet.position, _setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"].camera, _setup_index__WEBPACK_IMPORTED_MODULE_5__["renderer"].domElement);
     var mark = Object(_guiMarks_planet__WEBPACK_IMPORTED_MODULE_2__["planet"])();
     mark.position.x = screenCoordinates.x;
@@ -51608,6 +51610,10 @@ Object(_setup_index__WEBPACK_IMPORTED_MODULE_5__["onRender"])(function () {
         mark.position.y = screenCoordinates.y;
         mark.updateMatrix();
     });
+    var screenCoordinates = Object(_helpers_toScreenXY__WEBPACK_IMPORTED_MODULE_6__["toScreenXY2"])(sunMark.position, _setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"].camera, _setup_index__WEBPACK_IMPORTED_MODULE_5__["renderer"].domElement);
+    sunMark.position.x = screenCoordinates.x;
+    sunMark.position.y = screenCoordinates.y;
+    sunMark.updateMatrix();
 });
 
 
