@@ -16,7 +16,7 @@ var TrackballControls = function (object, domElement) {
     );
 
   var _this = this;
-  var STATE = { NONE: -1, ROTATE: 0, ZOOM: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_ZOOM_PAN: 4 };
+  var STATE = { NONE: -1, ZOOM: 1, PAN: 2, TOUCH_ZOOM_PAN: 4 };
 
   this.object = object;
   this.domElement = domElement;
@@ -27,11 +27,9 @@ var TrackballControls = function (object, domElement) {
 
   this.screen = { left: 0, top: 0, width: 0, height: 0 };
 
-  this.rotateSpeed = 1.0;
   this.zoomSpeed = 1.2;
   this.panSpeed = 0.3;
 
-  this.noRotate = false;
   this.noZoom = false;
   this.noPan = false;
 
@@ -43,7 +41,7 @@ var TrackballControls = function (object, domElement) {
 
   this.keys = [65 /*A*/, 83 /*S*/, 68 /*D*/];
 
-  this.mouseButtons = { LEFT: MOUSE.ROTATE, MIDDLE: MOUSE.ZOOM, RIGHT: MOUSE.PAN };
+  this.mouseButtons = { LEFT: MOUSE.PAN, MIDDLE: MOUSE.ZOOM };
 
   // internals
 
@@ -103,66 +101,6 @@ var TrackballControls = function (object, domElement) {
       );
 
       return vector;
-    };
-  })();
-
-  var getMouseOnCircle = (function () {
-    var vector = new Vector2();
-
-    return function getMouseOnCircle(pageX, pageY) {
-      vector.set(
-        (pageX - _this.screen.width * 0.5 - _this.screen.left) / (_this.screen.width * 0.5),
-        (_this.screen.height + 2 * (_this.screen.top - pageY)) / _this.screen.width, // screen.width intentional
-      );
-
-      return vector;
-    };
-  })();
-
-  this.rotateCamera = (function () {
-    var axis = new Vector3(),
-      quaternion = new Quaternion(),
-      eyeDirection = new Vector3(),
-      objectUpDirection = new Vector3(),
-      objectSidewaysDirection = new Vector3(),
-      moveDirection = new Vector3(),
-      angle;
-
-    return function rotateCamera() {
-      moveDirection.set(_moveCurr.x - _movePrev.x, _moveCurr.y - _movePrev.y, 0);
-      angle = moveDirection.length();
-
-      if (angle) {
-        _eye.copy(_this.object.position).sub(_this.target);
-
-        eyeDirection.copy(_eye).normalize();
-        objectUpDirection.copy(_this.object.up).normalize();
-        objectSidewaysDirection.crossVectors(objectUpDirection, eyeDirection).normalize();
-
-        objectUpDirection.setLength(_moveCurr.y - _movePrev.y);
-        objectSidewaysDirection.setLength(_moveCurr.x - _movePrev.x);
-
-        moveDirection.copy(objectUpDirection.add(objectSidewaysDirection));
-
-        axis.crossVectors(moveDirection, _eye).normalize();
-
-        angle *= _this.rotateSpeed;
-        quaternion.setFromAxisAngle(axis, angle);
-
-        _eye.applyQuaternion(quaternion);
-        _this.object.up.applyQuaternion(quaternion);
-
-        _lastAxis.copy(axis);
-        _lastAngle = angle;
-      } else if (!_this.staticMoving && _lastAngle) {
-        _lastAngle *= Math.sqrt(1.0 - _this.dynamicDampingFactor);
-        _eye.copy(_this.object.position).sub(_this.target);
-        quaternion.setFromAxisAngle(_lastAxis, _lastAngle);
-        _eye.applyQuaternion(quaternion);
-        _this.object.up.applyQuaternion(quaternion);
-      }
-
-      _movePrev.copy(_moveCurr);
     };
   })();
 
@@ -262,10 +200,6 @@ var TrackballControls = function (object, domElement) {
   this.update = function () {
     _eye.subVectors(_this.object.position, _this.target);
 
-    if (!_this.noRotate) {
-      _this.rotateCamera();
-    }
-
     if (!_this.noZoom) {
       _this.zoomCamera();
     }
@@ -333,8 +267,6 @@ var TrackballControls = function (object, domElement) {
 
     if (_keyState !== STATE.NONE) {
       return;
-    } else if (event.keyCode === _this.keys[STATE.ROTATE] && !_this.noRotate) {
-      _keyState = STATE.ROTATE;
     } else if (event.keyCode === _this.keys[STATE.ZOOM] && !_this.noZoom) {
       _keyState = STATE.ZOOM;
     } else if (event.keyCode === _this.keys[STATE.PAN] && !_this.noPan) {
@@ -358,15 +290,11 @@ var TrackballControls = function (object, domElement) {
 
     if (_state === STATE.NONE) {
       switch (event.button) {
-        case _this.mouseButtons.LEFT:
-          _state = STATE.ROTATE;
-          break;
-
         case _this.mouseButtons.MIDDLE:
           _state = STATE.ZOOM;
           break;
 
-        case _this.mouseButtons.RIGHT:
+        case _this.mouseButtons.LEFT:
           _state = STATE.PAN;
           break;
 
@@ -377,10 +305,7 @@ var TrackballControls = function (object, domElement) {
 
     var state = _keyState !== STATE.NONE ? _keyState : _state;
 
-    if (state === STATE.ROTATE && !_this.noRotate) {
-      _moveCurr.copy(getMouseOnCircle(event.pageX, event.pageY));
-      _movePrev.copy(_moveCurr);
-    } else if (state === STATE.ZOOM && !_this.noZoom) {
+    if (state === STATE.ZOOM && !_this.noZoom) {
       _zoomStart.copy(getMouseOnScreen(event.pageX, event.pageY));
       _zoomEnd.copy(_zoomStart);
     } else if (state === STATE.PAN && !_this.noPan) {
@@ -402,10 +327,7 @@ var TrackballControls = function (object, domElement) {
 
     var state = _keyState !== STATE.NONE ? _keyState : _state;
 
-    if (state === STATE.ROTATE && !_this.noRotate) {
-      _movePrev.copy(_moveCurr);
-      _moveCurr.copy(getMouseOnCircle(event.pageX, event.pageY));
-    } else if (state === STATE.ZOOM && !_this.noZoom) {
+    if (state === STATE.ZOOM && !_this.noZoom) {
       _zoomEnd.copy(getMouseOnScreen(event.pageX, event.pageY));
     } else if (state === STATE.PAN && !_this.noPan) {
       _panEnd.copy(getMouseOnScreen(event.pageX, event.pageY));
@@ -460,12 +382,6 @@ var TrackballControls = function (object, domElement) {
     event.preventDefault();
 
     switch (event.touches.length) {
-      case 1:
-        _state = STATE.TOUCH_ROTATE;
-        _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
-        _movePrev.copy(_moveCurr);
-        break;
-
       default:
         // 2 or more
         _state = STATE.TOUCH_ZOOM_PAN;
@@ -490,11 +406,6 @@ var TrackballControls = function (object, domElement) {
     event.stopPropagation();
 
     switch (event.touches.length) {
-      case 1:
-        _movePrev.copy(_moveCurr);
-        _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
-        break;
-
       default:
         // 2 or more
         var dx = event.touches[0].pageX - event.touches[1].pageX;
@@ -510,18 +421,7 @@ var TrackballControls = function (object, domElement) {
 
   function touchend(event) {
     if (_this.enabled === false) return;
-
-    switch (event.touches.length) {
-      case 0:
-        _state = STATE.NONE;
-        break;
-
-      case 1:
-        _state = STATE.TOUCH_ROTATE;
-        _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
-        _movePrev.copy(_moveCurr);
-        break;
-    }
+    _state = STATE.NONE;
 
     _this.dispatchEvent(endEvent);
   }

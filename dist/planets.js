@@ -51288,10 +51288,31 @@ if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
 
 /***/ }),
 
-/***/ "./src/circle.ts":
-/*!***********************!*\
-  !*** ./src/circle.ts ***!
-  \***********************/
+/***/ "./src/helpers/cameraType.ts":
+/*!***********************************!*\
+  !*** ./src/helpers/cameraType.ts ***!
+  \***********************************/
+/*! exports provided: isOrthographicCamera, isPerspectiveCamera */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isOrthographicCamera", function() { return isOrthographicCamera; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isPerspectiveCamera", function() { return isPerspectiveCamera; });
+var isOrthographicCamera = function (cam) {
+    return cam.type === 'OrthographicCamera';
+};
+var isPerspectiveCamera = function (cam) {
+    return cam.type === 'PerspectiveCamera';
+};
+
+
+/***/ }),
+
+/***/ "./src/helpers/circle.ts":
+/*!*******************************!*\
+  !*** ./src/helpers/circle.ts ***!
+  \*******************************/
 /*! exports provided: circle */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -51325,7 +51346,6 @@ __webpack_require__.r(__webpack_exports__);
 
 function createControls(camera, renderer) {
     var controls = new _trackball_trackball__WEBPACK_IMPORTED_MODULE_0__["TrackballControls"](camera, renderer.domElement);
-    controls.rotateSpeed = 1.0;
     controls.zoomSpeed = 1.2;
     controls.panSpeed = 0.8;
     controls.keys = [65, 83, 68];
@@ -51335,160 +51355,10 @@ function createControls(camera, renderer) {
 
 /***/ }),
 
-/***/ "./src/helpers/windowResize.ts":
-/*!*************************************!*\
-  !*** ./src/helpers/windowResize.ts ***!
-  \*************************************/
-/*! exports provided: onWindowResize */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "onWindowResize", function() { return onWindowResize; });
-var onWindowResize = function (camera, renderer, frustumSize, controls) { return function () {
-    var aspect = window.innerWidth / window.innerHeight;
-    camera.left = (-frustumSize * aspect) / 2;
-    camera.right = (frustumSize * aspect) / 2;
-    camera.top = frustumSize / 2;
-    camera.bottom = -frustumSize / 2;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    controls.handleResize();
-}; };
-
-
-/***/ }),
-
-/***/ "./src/index.ts":
-/*!**********************!*\
-  !*** ./src/index.ts ***!
-  \**********************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _setup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./setup */ "./src/setup.ts");
-/* harmony import */ var _circle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./circle */ "./src/circle.ts");
-/* harmony import */ var _solar_system__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./solar_system */ "./src/solar_system.ts");
-
-
-
-for (var _i = 0, _a = _solar_system__WEBPACK_IMPORTED_MODULE_2__["planets"]; _i < _a.length; _i++) {
-    var planet = _a[_i];
-    var line = Object(_circle__WEBPACK_IMPORTED_MODULE_1__["circle"])(planet.orbitRadius, 100);
-    _setup__WEBPACK_IMPORTED_MODULE_0__["scene"].add(line);
-}
-
-
-/***/ }),
-
-/***/ "./src/setup.ts":
-/*!**********************!*\
-  !*** ./src/setup.ts ***!
-  \**********************/
-/*! exports provided: scene */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "scene", function() { return scene; });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var _helpers_windowResize__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers/windowResize */ "./src/helpers/windowResize.ts");
-/* harmony import */ var _helpers_createControls__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers/createControls */ "./src/helpers/createControls.ts");
-
-
-
-var scene = new three__WEBPACK_IMPORTED_MODULE_0__["Scene"]();
-var frustumSize = 400;
-var renderer = new three__WEBPACK_IMPORTED_MODULE_0__["WebGLRenderer"]({ antialias: false });
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-/// Camera
-var aspect = window.innerWidth / window.innerHeight;
-var ocamera = new three__WEBPACK_IMPORTED_MODULE_0__["OrthographicCamera"]((frustumSize * aspect) / -2, (frustumSize * aspect) / 2, frustumSize / 2, frustumSize / -2, 1, 1000);
-ocamera.position.set(0, 0, 10000);
-ocamera.lookAt(0, 0, 0);
-/// Hooks
-var controls = Object(_helpers_createControls__WEBPACK_IMPORTED_MODULE_2__["createControls"])(ocamera, renderer);
-// controls.noRotate = true;
-var resizeHandler = Object(_helpers_windowResize__WEBPACK_IMPORTED_MODULE_1__["onWindowResize"])(ocamera, renderer, frustumSize, controls);
-window.addEventListener('resize', resizeHandler, false);
-/// Animate
-function animate() {
-    requestAnimationFrame(animate);
-    controls.update();
-    console.log(ocamera.left, ocamera.right - ocamera.left, ocamera.bottom - ocamera.top, ocamera.quaternion);
-    renderer.render(scene, ocamera);
-}
-animate();
-
-
-/***/ }),
-
-/***/ "./src/solar_system.ts":
-/*!*****************************!*\
-  !*** ./src/solar_system.ts ***!
-  \*****************************/
-/*! exports provided: planets */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "planets", function() { return planets; });
-/* harmony import */ var _thera_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./thera.json */ "./src/thera.json");
-var _thera_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpack_require__.t(/*! ./thera.json */ "./src/thera.json", 1);
-/* harmony import */ var _three_func__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./three_func */ "./src/three_func.ts");
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-var __assign = (undefined && undefined.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-
-
-
-var positionToVector3 = function (position) {
-    return new _three_func__WEBPACK_IMPORTED_MODULE_1__["MyVector3"](parseInt(position.x, 10), parseInt(position.y, 10), parseInt(position.z, 10));
-};
-var planets = _thera_json__WEBPACK_IMPORTED_MODULE_0__.data.system.planets
-    .map(function (p) { return p.planet; })
-    .map(function (p) {
-    var position = positionToVector3(p.position);
-    var xyLength = new three__WEBPACK_IMPORTED_MODULE_2__["Vector2"](position.x, position.y).length();
-    var inclination = Math.atan(position.z / xyLength);
-    var phi = Math.atan(position.y / position.x);
-    var orbitRadius = position.length();
-    return __assign(__assign({}, p), { position: position,
-        orbitRadius: orbitRadius,
-        inclination: inclination,
-        phi: phi });
-});
-
-
-/***/ }),
-
-/***/ "./src/thera.json":
-/*!************************!*\
-  !*** ./src/thera.json ***!
-  \************************/
-/*! exports provided: data, default */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"data\":{\"system\":{\"name\":\"Thera\",\"planets\":[{\"planet\":{\"position\":{\"x\":\"-139805122560\",\"y\":\"2966691840\",\"z\":\"-9323765760\"},\"name\":\"Thera I\"}},{\"planet\":{\"position\":{\"x\":\"127493038080\",\"y\":\"9986334720\",\"z\":\"-216702197760\"},\"name\":\"Thera II\"}},{\"planet\":{\"position\":{\"x\":\"-559598100480\",\"y\":\"11698298880\",\"z\":\"490402160640\"},\"name\":\"Thera III\"}},{\"planet\":{\"position\":{\"x\":\"1549332848640\",\"y\":\"14519623680\",\"z\":\"889147269120\"},\"name\":\"Thera IV\"}},{\"planet\":{\"position\":{\"x\":\"-2181784166400\",\"y\":\"690188328960\",\"z\":\"20929781760\"},\"name\":\"Thera V\"}},{\"planet\":{\"position\":{\"x\":\"-581035253760\",\"y\":\"60990627840\",\"z\":\"2893017538560\"},\"name\":\"Thera VI\"}},{\"planet\":{\"position\":{\"x\":\"3123797237760\",\"y\":\"57796485120\",\"z\":\"-2268051578880\"},\"name\":\"Thera VII\"}},{\"planet\":{\"position\":{\"x\":\"-5149448232960\",\"y\":\"81971650560\",\"z\":\"-1641522831360\"},\"name\":\"Thera VIII\"}},{\"planet\":{\"position\":{\"x\":\"7475123527680\",\"y\":\"82525102080\",\"z\":\"3647845539840\"},\"name\":\"Thera IX\"}},{\"planet\":{\"position\":{\"x\":\"4996060323840\",\"y\":\"125906165760\",\"z\":\"-12092421857280\"},\"name\":\"Thera X\"}},{\"planet\":{\"position\":{\"x\":\"-4730141368320\",\"y\":\"156943687680\",\"z\":\"-13890975621120\"},\"name\":\"Thera XI\"}},{\"planet\":{\"position\":{\"x\":\"-18672272547840\",\"y\":\"255793029120\",\"z\":\"10656165519360\"},\"name\":\"Thera XII\"}},{\"planet\":{\"position\":{\"x\":\"20884210851840\",\"y\":\"-4955793039360\",\"z\":\"17166388715520\"},\"name\":\"Thera XIII\"}},{\"planet\":{\"position\":{\"x\":\"1664115302400\",\"y\":\"310939361280\",\"z\":\"-30338702254080\"},\"name\":\"Thera XIV\"}}],\"position\":{\"x\":\"7201177000000000000\",\"y\":\"1534300000000000000\",\"z\":\"-9501332482538404000\"}}}}");
-
-/***/ }),
-
-/***/ "./src/three_func.ts":
-/*!***************************!*\
-  !*** ./src/three_func.ts ***!
-  \***************************/
+/***/ "./src/helpers/three_func.ts":
+/*!***********************************!*\
+  !*** ./src/helpers/three_func.ts ***!
+  \***********************************/
 /*! exports provided: MyVector3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -51525,6 +51395,306 @@ var MyVector3 = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./src/helpers/toScreenXY.ts":
+/*!***********************************!*\
+  !*** ./src/helpers/toScreenXY.ts ***!
+  \***********************************/
+/*! exports provided: toScreenXY */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toScreenXY", function() { return toScreenXY; });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+
+var toScreenXY = function (position, camera, canvas) {
+    var pos = position.clone();
+    var projScreenMat = new three__WEBPACK_IMPORTED_MODULE_0__["Matrix4"]();
+    projScreenMat.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+    projScreenMat.multiplyVector3(pos);
+    return {
+        x: ((pos.x + 1) * canvas.width) / 2,
+        y: ((-pos.y + 1) * canvas.height) / 2,
+    };
+};
+
+
+/***/ }),
+
+/***/ "./src/helpers/windowResize.ts":
+/*!*************************************!*\
+  !*** ./src/helpers/windowResize.ts ***!
+  \*************************************/
+/*! exports provided: updateCamera, onWindowResize */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateCamera", function() { return updateCamera; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "onWindowResize", function() { return onWindowResize; });
+/* harmony import */ var _cameraType__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cameraType */ "./src/helpers/cameraType.ts");
+
+var updateCamera = function (_a) {
+    var camera = _a.camera, frustumSize = _a.frustumSize;
+    var aspect = window.innerWidth / window.innerHeight;
+    if (Object(_cameraType__WEBPACK_IMPORTED_MODULE_0__["isOrthographicCamera"])(camera)) {
+        if (frustumSize !== null) {
+            camera.left = (-frustumSize * aspect) / 2;
+            camera.right = (frustumSize * aspect) / 2;
+            camera.top = frustumSize / 2;
+            camera.bottom = -frustumSize / 2;
+            camera.updateProjectionMatrix();
+        }
+    }
+    if (Object(_cameraType__WEBPACK_IMPORTED_MODULE_0__["isPerspectiveCamera"])(camera)) {
+        camera.aspect = aspect;
+        camera.updateProjectionMatrix();
+    }
+};
+var onWindowResize = function (combos, renderer, controls) {
+    combos.forEach(function (combo) {
+        updateCamera(combo);
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    controls.handleResize();
+};
+
+
+/***/ }),
+
+/***/ "./src/index.ts":
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _setup_mainScene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./setup/mainScene */ "./src/setup/mainScene.ts");
+/* harmony import */ var _setup_gui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./setup/gui */ "./src/setup/gui.ts");
+/* harmony import */ var _helpers_circle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers/circle */ "./src/helpers/circle.ts");
+/* harmony import */ var _solar_system__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./solar_system */ "./src/solar_system.ts");
+/* harmony import */ var _setup_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./setup/index */ "./src/setup/index.ts");
+/* harmony import */ var _helpers_toScreenXY__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./helpers/toScreenXY */ "./src/helpers/toScreenXY.ts");
+
+
+
+
+
+
+
+Object(_setup_index__WEBPACK_IMPORTED_MODULE_4__["registerCamera"])(_setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"]);
+Object(_setup_index__WEBPACK_IMPORTED_MODULE_4__["registerCamera"])(_setup_gui__WEBPACK_IMPORTED_MODULE_1__["camCombo"]);
+for (var _i = 0, _a = _solar_system__WEBPACK_IMPORTED_MODULE_3__["planets"]; _i < _a.length; _i++) {
+    var planet = _a[_i];
+    var line = Object(_helpers_circle__WEBPACK_IMPORTED_MODULE_2__["circle"])(planet.orbitRadius, 1000);
+    _setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"].scene.add(line);
+}
+Object(_setup_index__WEBPACK_IMPORTED_MODULE_4__["onRender"])(function () {
+    if (_setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"]) {
+        _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].clearRect(0, 0, _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudCanvas"].width, _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudCanvas"].height);
+    }
+    for (var _i = 0, _a = _solar_system__WEBPACK_IMPORTED_MODULE_3__["planets"]; _i < _a.length; _i++) {
+        var planet = _a[_i];
+        var screenCoordinates = Object(_helpers_toScreenXY__WEBPACK_IMPORTED_MODULE_5__["toScreenXY"])(planet.position, _setup_mainScene__WEBPACK_IMPORTED_MODULE_0__["camCombo"].camera, _setup_index__WEBPACK_IMPORTED_MODULE_4__["renderer"].domElement);
+        if (_setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"]) {
+            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].beginPath();
+            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].arc(screenCoordinates.x, screenCoordinates.y, 6, 0, 2 * Math.PI, false);
+            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].fillStyle = '#ffffff';
+            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].fill();
+            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].beginPath();
+            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].arc(screenCoordinates.x, screenCoordinates.y, 9, 0, 2 * Math.PI, false);
+            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].lineWidth = 1;
+            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].strokeStyle = '#ffffff';
+            _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudBitmap"].stroke();
+        }
+        _setup_gui__WEBPACK_IMPORTED_MODULE_1__["hudTexture"].needsUpdate = true;
+    }
+});
+
+
+/***/ }),
+
+/***/ "./src/planets/jita.json":
+/*!*******************************!*\
+  !*** ./src/planets/jita.json ***!
+  \*******************************/
+/*! exports provided: data, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"data\":{\"system\":{\"system_id\":\"30000142\",\"planets\":[{\"planet_id\":40009077,\"planet\":{\"planet_id\":\"40009077\",\"position\":{\"x\":\"-35639949630\",\"y\":\"-6225947509\",\"z\":\"20551935633\"},\"name\":\"Jita I\"}},{\"planet_id\":40009078,\"planet\":{\"planet_id\":\"40009078\",\"position\":{\"x\":\"29476716044\",\"y\":\"5149291420\",\"z\":\"-46417511315\"},\"name\":\"Jita II\"}},{\"planet_id\":40009080,\"planet\":{\"planet_id\":\"40009080\",\"position\":{\"x\":\"124056083719\",\"y\":\"21671373654\",\"z\":\"16235707106\"},\"name\":\"Jita III\"}},{\"planet_id\":40009082,\"planet\":{\"planet_id\":\"40009082\",\"position\":{\"x\":\"-107354576606\",\"y\":\"-18753785170\",\"z\":\"436797007078\"},\"name\":\"Jita IV\"}},{\"planet_id\":40009098,\"planet\":{\"planet_id\":\"40009098\",\"position\":{\"x\":\"-639929607985\",\"y\":\"-111789387758\",\"z\":\"-1118379774141\"},\"name\":\"Jita V\"}},{\"planet_id\":40009116,\"planet\":{\"planet_id\":\"40009116\",\"position\":{\"x\":\"2907924314427\",\"y\":\"507985682645\",\"z\":\"-950946134275\"},\"name\":\"Jita VI\"}},{\"planet_id\":40009119,\"planet\":{\"planet_id\":\"40009119\",\"position\":{\"x\":\"-2275005926406\",\"y\":\"-397421085828\",\"z\":\"3223734974754\"},\"name\":\"Jita VII\"}},{\"planet_id\":40009123,\"planet\":{\"planet_id\":\"40009123\",\"position\":{\"x\":\"-4067664386091\",\"y\":\"-710580828973\",\"z\":\"-3956610895959\"},\"name\":\"Jita VIII\"}}],\"name\":\"Jita\"}}}");
+
+/***/ }),
+
+/***/ "./src/setup/gui.ts":
+/*!**************************!*\
+  !*** ./src/setup/gui.ts ***!
+  \**************************/
+/*! exports provided: hudCanvas, hudBitmap, hudTexture, camCombo */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hudCanvas", function() { return hudCanvas; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hudBitmap", function() { return hudBitmap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hudTexture", function() { return hudTexture; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "camCombo", function() { return camCombo; });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+
+var width = window.innerWidth;
+var height = window.innerHeight;
+// We will use 2D canvas element to render our HUD.
+var hudCanvas = document.createElement('canvas');
+// Again, set dimensions to fit the screen.
+hudCanvas.width = width;
+hudCanvas.height = height;
+// Get 2D context and draw something supercool.
+var hudBitmap = hudCanvas.getContext('2d');
+if (hudBitmap === null)
+    throw new Error('hudBitmap is null');
+hudBitmap.font = 'Normal 40px Arial';
+hudBitmap.textAlign = 'center';
+hudBitmap.fillStyle = 'rgba(245,245,245,0.75)';
+hudBitmap.fillText('Initializing...', width / 2, height / 2);
+// Create the camera and set the viewport to match the screen dimensions.
+var cameraHUD = new three__WEBPACK_IMPORTED_MODULE_0__["OrthographicCamera"](-width / 2, width / 2, height / 2, -height / 2, 0, 30);
+// Create also a custom scene for HUD.
+var sceneHUD = new three__WEBPACK_IMPORTED_MODULE_0__["Scene"]();
+// Create texture from rendered graphics.
+var hudTexture = new three__WEBPACK_IMPORTED_MODULE_0__["Texture"](hudCanvas);
+hudTexture.needsUpdate = true;
+// Create HUD material.
+var material = new three__WEBPACK_IMPORTED_MODULE_0__["MeshBasicMaterial"]({ map: hudTexture });
+material.transparent = true;
+// Create plane to render the HUD. This plane fill the whole screen.
+var planeGeometry = new three__WEBPACK_IMPORTED_MODULE_0__["PlaneGeometry"](width, height);
+var plane = new three__WEBPACK_IMPORTED_MODULE_0__["Mesh"](planeGeometry, material);
+sceneHUD.add(plane);
+var camCombo = { camera: cameraHUD, frustumSize: null, scene: sceneHUD };
+
+
+/***/ }),
+
+/***/ "./src/setup/index.ts":
+/*!****************************!*\
+  !*** ./src/setup/index.ts ***!
+  \****************************/
+/*! exports provided: renderer, onRender, registerCamera */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderer", function() { return renderer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "onRender", function() { return onRender; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "registerCamera", function() { return registerCamera; });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _helpers_windowResize__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/windowResize */ "./src/helpers/windowResize.ts");
+/* harmony import */ var _helpers_createControls__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/createControls */ "./src/helpers/createControls.ts");
+/* harmony import */ var _mainScene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mainScene */ "./src/setup/mainScene.ts");
+
+
+
+
+// renderer
+var renderer = new three__WEBPACK_IMPORTED_MODULE_0__["WebGLRenderer"]({ antialias: false });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.autoClear = false;
+document.body.appendChild(renderer.domElement);
+// controls
+var controls = Object(_helpers_createControls__WEBPACK_IMPORTED_MODULE_2__["createControls"])(_mainScene__WEBPACK_IMPORTED_MODULE_3__["camCombo"].camera, renderer);
+// controls.noRotate = true
+// renderHooks
+var renderHooks = [];
+var onRender = function (hook) {
+    renderHooks.push(hook);
+};
+// cameras
+var cameras = [];
+var registerCamera = function (combo) {
+    cameras.push(combo);
+    Object(_helpers_windowResize__WEBPACK_IMPORTED_MODULE_1__["updateCamera"])(combo);
+};
+var onResize = function () { return Object(_helpers_windowResize__WEBPACK_IMPORTED_MODULE_1__["onWindowResize"])(cameras, renderer, controls); };
+window.addEventListener('resize', onResize, false);
+function animate() {
+    renderHooks.forEach(function (hook) { return hook(); });
+    cameras.forEach(function (_a) {
+        var camera = _a.camera, scene = _a.scene;
+        renderer.render(scene, camera);
+    });
+    controls.update();
+    requestAnimationFrame(animate);
+}
+animate();
+
+
+/***/ }),
+
+/***/ "./src/setup/mainScene.ts":
+/*!********************************!*\
+  !*** ./src/setup/mainScene.ts ***!
+  \********************************/
+/*! exports provided: camCombo */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "camCombo", function() { return camCombo; });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+
+var mainScene = new three__WEBPACK_IMPORTED_MODULE_0__["Scene"]();
+mainScene.add(new three__WEBPACK_IMPORTED_MODULE_0__["AxesHelper"](20));
+var frustumSize = 8 * Math.pow(10, 13);
+var mainCamera = new three__WEBPACK_IMPORTED_MODULE_0__["OrthographicCamera"](1, 1, 1, 1, 1, Math.pow(10, 100));
+mainCamera.position.set(0, 0, Math.pow(10, 2));
+mainCamera.lookAt(0, 0, 0);
+var camCombo = { camera: mainCamera, frustumSize: frustumSize, scene: mainScene };
+
+
+/***/ }),
+
+/***/ "./src/solar_system.ts":
+/*!*****************************!*\
+  !*** ./src/solar_system.ts ***!
+  \*****************************/
+/*! exports provided: planets */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "planets", function() { return planets; });
+/* harmony import */ var _planets_jita_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./planets/jita.json */ "./src/planets/jita.json");
+var _planets_jita_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpack_require__.t(/*! ./planets/jita.json */ "./src/planets/jita.json", 1);
+/* harmony import */ var _helpers_three_func__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers/three_func */ "./src/helpers/three_func.ts");
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+
+var positionToVector3 = function (position) {
+    return new _helpers_three_func__WEBPACK_IMPORTED_MODULE_1__["MyVector3"](parseInt(position.x, 10), parseInt(position.z, 10), 0);
+};
+var planets = _planets_jita_json__WEBPACK_IMPORTED_MODULE_0__.data.system.planets
+    .map(function (p) { return p.planet; })
+    .map(function (p) {
+    var position = positionToVector3(p.position);
+    var orbitRadius = position.length();
+    return __assign(__assign({}, p), { position: position,
+        orbitRadius: orbitRadius });
+});
+
+
+/***/ }),
+
 /***/ "./src/trackball/trackball.js":
 /*!************************************!*\
   !*** ./src/trackball/trackball.js ***!
@@ -51554,7 +51724,7 @@ var TrackballControls = function (object, domElement) {
     );
 
   var _this = this;
-  var STATE = { NONE: -1, ROTATE: 0, ZOOM: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_ZOOM_PAN: 4 };
+  var STATE = { NONE: -1, ZOOM: 1, PAN: 2, TOUCH_ZOOM_PAN: 4 };
 
   this.object = object;
   this.domElement = domElement;
@@ -51565,11 +51735,9 @@ var TrackballControls = function (object, domElement) {
 
   this.screen = { left: 0, top: 0, width: 0, height: 0 };
 
-  this.rotateSpeed = 1.0;
   this.zoomSpeed = 1.2;
   this.panSpeed = 0.3;
 
-  this.noRotate = false;
   this.noZoom = false;
   this.noPan = false;
 
@@ -51581,7 +51749,7 @@ var TrackballControls = function (object, domElement) {
 
   this.keys = [65 /*A*/, 83 /*S*/, 68 /*D*/];
 
-  this.mouseButtons = { LEFT: three__WEBPACK_IMPORTED_MODULE_0__["MOUSE"].ROTATE, MIDDLE: three__WEBPACK_IMPORTED_MODULE_0__["MOUSE"].ZOOM, RIGHT: three__WEBPACK_IMPORTED_MODULE_0__["MOUSE"].PAN };
+  this.mouseButtons = { LEFT: three__WEBPACK_IMPORTED_MODULE_0__["MOUSE"].PAN, MIDDLE: three__WEBPACK_IMPORTED_MODULE_0__["MOUSE"].ZOOM };
 
   // internals
 
@@ -51641,66 +51809,6 @@ var TrackballControls = function (object, domElement) {
       );
 
       return vector;
-    };
-  })();
-
-  var getMouseOnCircle = (function () {
-    var vector = new three__WEBPACK_IMPORTED_MODULE_0__["Vector2"]();
-
-    return function getMouseOnCircle(pageX, pageY) {
-      vector.set(
-        (pageX - _this.screen.width * 0.5 - _this.screen.left) / (_this.screen.width * 0.5),
-        (_this.screen.height + 2 * (_this.screen.top - pageY)) / _this.screen.width, // screen.width intentional
-      );
-
-      return vector;
-    };
-  })();
-
-  this.rotateCamera = (function () {
-    var axis = new three__WEBPACK_IMPORTED_MODULE_0__["Vector3"](),
-      quaternion = new three__WEBPACK_IMPORTED_MODULE_0__["Quaternion"](),
-      eyeDirection = new three__WEBPACK_IMPORTED_MODULE_0__["Vector3"](),
-      objectUpDirection = new three__WEBPACK_IMPORTED_MODULE_0__["Vector3"](),
-      objectSidewaysDirection = new three__WEBPACK_IMPORTED_MODULE_0__["Vector3"](),
-      moveDirection = new three__WEBPACK_IMPORTED_MODULE_0__["Vector3"](),
-      angle;
-
-    return function rotateCamera() {
-      moveDirection.set(_moveCurr.x - _movePrev.x, _moveCurr.y - _movePrev.y, 0);
-      angle = moveDirection.length();
-
-      if (angle) {
-        _eye.copy(_this.object.position).sub(_this.target);
-
-        eyeDirection.copy(_eye).normalize();
-        objectUpDirection.copy(_this.object.up).normalize();
-        objectSidewaysDirection.crossVectors(objectUpDirection, eyeDirection).normalize();
-
-        objectUpDirection.setLength(_moveCurr.y - _movePrev.y);
-        objectSidewaysDirection.setLength(_moveCurr.x - _movePrev.x);
-
-        moveDirection.copy(objectUpDirection.add(objectSidewaysDirection));
-
-        axis.crossVectors(moveDirection, _eye).normalize();
-
-        angle *= _this.rotateSpeed;
-        quaternion.setFromAxisAngle(axis, angle);
-
-        _eye.applyQuaternion(quaternion);
-        _this.object.up.applyQuaternion(quaternion);
-
-        _lastAxis.copy(axis);
-        _lastAngle = angle;
-      } else if (!_this.staticMoving && _lastAngle) {
-        _lastAngle *= Math.sqrt(1.0 - _this.dynamicDampingFactor);
-        _eye.copy(_this.object.position).sub(_this.target);
-        quaternion.setFromAxisAngle(_lastAxis, _lastAngle);
-        _eye.applyQuaternion(quaternion);
-        _this.object.up.applyQuaternion(quaternion);
-      }
-
-      _movePrev.copy(_moveCurr);
     };
   })();
 
@@ -51800,10 +51908,6 @@ var TrackballControls = function (object, domElement) {
   this.update = function () {
     _eye.subVectors(_this.object.position, _this.target);
 
-    if (!_this.noRotate) {
-      _this.rotateCamera();
-    }
-
     if (!_this.noZoom) {
       _this.zoomCamera();
     }
@@ -51871,8 +51975,6 @@ var TrackballControls = function (object, domElement) {
 
     if (_keyState !== STATE.NONE) {
       return;
-    } else if (event.keyCode === _this.keys[STATE.ROTATE] && !_this.noRotate) {
-      _keyState = STATE.ROTATE;
     } else if (event.keyCode === _this.keys[STATE.ZOOM] && !_this.noZoom) {
       _keyState = STATE.ZOOM;
     } else if (event.keyCode === _this.keys[STATE.PAN] && !_this.noPan) {
@@ -51896,15 +51998,11 @@ var TrackballControls = function (object, domElement) {
 
     if (_state === STATE.NONE) {
       switch (event.button) {
-        case _this.mouseButtons.LEFT:
-          _state = STATE.ROTATE;
-          break;
-
         case _this.mouseButtons.MIDDLE:
           _state = STATE.ZOOM;
           break;
 
-        case _this.mouseButtons.RIGHT:
+        case _this.mouseButtons.LEFT:
           _state = STATE.PAN;
           break;
 
@@ -51915,10 +52013,7 @@ var TrackballControls = function (object, domElement) {
 
     var state = _keyState !== STATE.NONE ? _keyState : _state;
 
-    if (state === STATE.ROTATE && !_this.noRotate) {
-      _moveCurr.copy(getMouseOnCircle(event.pageX, event.pageY));
-      _movePrev.copy(_moveCurr);
-    } else if (state === STATE.ZOOM && !_this.noZoom) {
+    if (state === STATE.ZOOM && !_this.noZoom) {
       _zoomStart.copy(getMouseOnScreen(event.pageX, event.pageY));
       _zoomEnd.copy(_zoomStart);
     } else if (state === STATE.PAN && !_this.noPan) {
@@ -51940,10 +52035,7 @@ var TrackballControls = function (object, domElement) {
 
     var state = _keyState !== STATE.NONE ? _keyState : _state;
 
-    if (state === STATE.ROTATE && !_this.noRotate) {
-      _movePrev.copy(_moveCurr);
-      _moveCurr.copy(getMouseOnCircle(event.pageX, event.pageY));
-    } else if (state === STATE.ZOOM && !_this.noZoom) {
+    if (state === STATE.ZOOM && !_this.noZoom) {
       _zoomEnd.copy(getMouseOnScreen(event.pageX, event.pageY));
     } else if (state === STATE.PAN && !_this.noPan) {
       _panEnd.copy(getMouseOnScreen(event.pageX, event.pageY));
@@ -51998,12 +52090,6 @@ var TrackballControls = function (object, domElement) {
     event.preventDefault();
 
     switch (event.touches.length) {
-      case 1:
-        _state = STATE.TOUCH_ROTATE;
-        _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
-        _movePrev.copy(_moveCurr);
-        break;
-
       default:
         // 2 or more
         _state = STATE.TOUCH_ZOOM_PAN;
@@ -52028,11 +52114,6 @@ var TrackballControls = function (object, domElement) {
     event.stopPropagation();
 
     switch (event.touches.length) {
-      case 1:
-        _movePrev.copy(_moveCurr);
-        _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
-        break;
-
       default:
         // 2 or more
         var dx = event.touches[0].pageX - event.touches[1].pageX;
@@ -52048,18 +52129,7 @@ var TrackballControls = function (object, domElement) {
 
   function touchend(event) {
     if (_this.enabled === false) return;
-
-    switch (event.touches.length) {
-      case 0:
-        _state = STATE.NONE;
-        break;
-
-      case 1:
-        _state = STATE.TOUCH_ROTATE;
-        _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
-        _movePrev.copy(_moveCurr);
-        break;
-    }
+    _state = STATE.NONE;
 
     _this.dispatchEvent(endEvent);
   }
