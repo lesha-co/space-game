@@ -4,21 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rm -r dist && webpack --mode development --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "hot": "node dev-server.js",
+    "watch": "webpack --mode development --watch",
+    "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "Aleksei Kuzmichev <lesha@lesha.co> (https://lesha.co/)",
   "license": "ISC",
   "dependencies": {
     "three": "^0.116.1",
-    "three-trackballcontrols": "0.0.8",
-    "three-trackballcontrols-ts": "^0.2.1",
     "webpack": "^4.43.0"
   },
   "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.5.3",
+    "html-webpack-plugin": "^4.3.0",
+    "style-loader": "^1.2.1",
     "ts-loader": "^7.0.4",
     "typescript": "^3.9.2",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
   }
 }

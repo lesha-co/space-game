@@ -1,11 +1,14 @@
-import { WebGLRenderer, Camera, Scene } from 'three';
+import { WebGLRenderer } from 'three';
 import { onWindowResize, updateCamera } from '../helpers/windowResize';
 import { CamCombo } from '../commonTypes';
 import { createControls } from '../helpers/createControls';
 import { camCombo } from './mainScene';
 
 // renderer
-export const renderer = new WebGLRenderer({ antialias: false });
+document.body.childNodes.forEach((item) => {
+  document.body.removeChild(item);
+});
+export const renderer = new WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.autoClear = false;
 document.body.appendChild(renderer.domElement);
