@@ -1,5 +1,5 @@
 import { Object3D, MeshBasicMaterial, DoubleSide } from 'three';
-import { circle, circleFilled } from './primitives';
+import { circle, circleFilled } from '../helpers/primitives';
 
 const material = new MeshBasicMaterial({ color: 0xffffff, side: DoubleSide });
 

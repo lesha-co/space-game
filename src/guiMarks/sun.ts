@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { circle, circleFilled, line } from './primitives';
+import { circle, circleFilled, line } from '../helpers/primitives';
 import { Object3D } from 'three';
 
 const material = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });

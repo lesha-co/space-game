@@ -1,6 +1,6 @@
 import { WebGLRenderer } from 'three';
 import { onWindowResize, updateCamera } from '../helpers/windowResize';
-import { CamCombo } from '../commonTypes';
+import { CamCombo } from '../helpers/commonTypes';
 import { createControls } from '../helpers/createControls';
 import { camCombo } from './mainScene';
 

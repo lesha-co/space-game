@@ -1,21 +1,32 @@
 import { camCombo } from './setup/mainScene';
 import { camCombo as guiCombo } from './setup/gui';
 import { planet as planetMark } from './guiMarks/planet';
-import { circle } from './guiMarks/primitives';
-import { planets } from './solar_system';
+import { circle } from './helpers/primitives';
+import { planets } from './helpers/solar_system';
 import { registerCamera, renderer, onRender } from './setup/index';
 import { toScreenXY2 } from './helpers/toScreenXY';
-import { Object3D } from 'three';
+import * as THREE from 'three';
 import { sun } from './guiMarks/sun';
+import { sun as sunModel } from './models/sun';
 
 export const init = () => {
-  const planetMarks: Object3D[] = [];
-  const orbits: Object3D[] = [];
+  const planetMarks: THREE.Object3D[] = [];
+  const orbits: THREE.Object3D[] = [];
   const sunMark = sun();
   console.log('init!!');
 
   registerCamera(camCombo);
   registerCamera(guiCombo);
+
+  {
+    const color = 0xffffff;
+    const intensity = 2;
+    const light = new THREE.DirectionalLight(color, intensity);
+    light.position.set(0, 0, 1);
+    light.target.position.set(0, 0, 0);
+    camCombo.scene.add(light);
+    camCombo.scene.add(light.target);
+  }
 
   planets.forEach((planet) => {
     const line = circle(planet.orbitRadius, 1000);
@@ -29,8 +40,16 @@ export const init = () => {
     mark.updateMatrix();
     planetMarks.push(mark);
     guiCombo.scene.add(mark);
-    guiCombo.scene.add(sunMark);
   });
+
+  const sunM = sunModel(100000);
+  {
+    sunM.updateMatrix();
+    sunM.rotateX((Math.PI / 180) * 33);
+    sunM.rotateZ((Math.PI / 180) * -33);
+    camCombo.scene.add(sunM);
+    guiCombo.scene.add(sunMark);
+  }
 
   onRender(() => {
     planets.forEach((planet, index) => {
@@ -45,5 +64,8 @@ export const init = () => {
     sunMark.position.x = screenCoordinates.x;
     sunMark.position.y = screenCoordinates.y;
     sunMark.updateMatrix();
+
+    sunM.rotateY((Math.PI / 180) * 0.1);
+    sunM.updateMatrix();
   });
 };

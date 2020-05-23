@@ -1,4 +1,4 @@
-import system from './systems/jita.json';
+import system from '../systems/jita.json';
 
 import { Vector3 } from 'three';
 

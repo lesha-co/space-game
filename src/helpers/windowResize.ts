@@ -1,7 +1,7 @@
 import { Renderer } from 'three';
 import { TrackballControls } from '../trackball/trackball';
 import { isOrthographicCamera, isPerspectiveCamera } from './cameraType';
-import { CamCombo } from '../commonTypes';
+import { CamCombo } from './commonTypes';
 export const updateCamera = ({ camera, frustumSize }: CamCombo) => {
   var aspect = window.innerWidth / window.innerHeight;
 
